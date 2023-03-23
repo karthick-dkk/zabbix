@@ -1,7 +1,7 @@
 **# Install Zabbix on Linux machines with in 2 minutes!**
 **OS Tested:**
 Centos/ Redhat/ debian/ ubuntu
-
+**Install Zabbix Server ,Frontend , Database & Java Gateway**
 **Requirements:**
 
 1.docker - installation instructions --> https://docs.docker.com/engine/install/centos/
@@ -32,4 +32,8 @@ Password: zabbix
 
 **Notes: **
 
-  Make sure your allowed port 8080 on your Machine or Firewall
+  Make sure your are allowed port 8080 on your Machine or Firewall
+
+Install Zabbix Agent :
+
+
