@@ -1,6 +1,7 @@
 **# Install Zabbix on Linux machines with in 2 minutes!**
 **OS Tested:**
 Centos/ Redhat/ debian/ ubuntu
+
 **Install Zabbix Server ,Frontend , Database & Java Gateway**
 **Requirements:**
 
@@ -34,6 +35,18 @@ Password: zabbix
 
   Make sure your are allowed port 8080 on your Machine or Firewall
 
-Install Zabbix Agent :
+Install Zabbix Agent 2 on CentOS :
 
+Add Repo:
+# sudo rpm -Uvh https://repo.zabbix.com/zabbix/6.4/rhel/8/x86_64/zabbix-release-6.4-1.el8.noarch.rpm
+
+# dnf clean all
+Download Zabbix Agent2:
+# dnf install zabbix-agent2 zabbix-agent2-plugin-*
+ 
+Start and Enable on boot : 
+
+# systemctl restart zabbix-agent2
+
+# systemctl enable zabbix-agent2
 
