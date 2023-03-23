@@ -49,6 +49,6 @@ dnf install zabbix-agent2 zabbix-agent2-plugin-*
  
 **Start and Enable on boot :**
 
-systemctl restart zabbix-agent2
+systemctl restart zabbix-agent2 && 
 systemctl enable zabbix-agent2
 
