@@ -18,10 +18,6 @@ chmod u+x  zabbix-karthick_dk/zabbix_installation.sh
 
 zabbix-karthick_dk/zabbix_installation.sh
 
-or 
-
-cd zabbix-karthick_dk/  &&  ./zabbix_installation
-
 **Delete Existing Containers and Re-run:**
 
 ./zabbix_installation remove
