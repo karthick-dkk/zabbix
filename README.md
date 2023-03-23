@@ -24,7 +24,7 @@ zabbix-karthick_dk/zabbix_installation.sh
 
 **Default Login Details:**
 
-URL: http://localhost:8080         (or)          http://<ip-address>:8080
+URL: http://localhost:8080         (or)          http://IP-Address:8080
 
 User: Admin
   
