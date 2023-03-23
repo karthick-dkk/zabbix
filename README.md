@@ -24,6 +24,12 @@ zabbix-karthick_dk/zabbix_installation.sh
 
 **Default Login Details:**
 
-URL: localhost:8080     or   <ip-address>:8080
-Uer: Admin
+URL: http://localhost:8080         (or)          http://<ip-address>:8080
+
+User: Admin
+  
 Password: zabbix
+
+**Notes: **
+
+  Make sure your allowed port 8080 on your Machine or Firewall
