@@ -1,4 +1,4 @@
-**# Install Zabbix on Linux machines with in 2 minutes!**
+****# Install Zabbix on Linux machines with in 2 minutes!****
 **OS Tested:**
 Centos/ Redhat/ debian/ ubuntu
 
