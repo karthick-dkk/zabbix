@@ -9,8 +9,7 @@ DB_SERVER_HOST='mysql-server'
 ZBX_JAVAGATEWAY='zabbix-java-gateway'
 ZBX_SERVER_HOST='zabbix-server-mysql'
 
-if [ $1 == remove ];
-then	
+if [[ $1 == "remove" ]];then	
 	docker rm mysql-server zabbix-java-gateway zabbix-server-mysql zabbix-web-nginx-mysql -f
 echo -e "\nContainers deleted"
 else
@@ -60,5 +59,4 @@ docker run --name zabbix-web-nginx-mysql -t \
       --restart unless-stopped \
       -d zabbix/zabbix-web-nginx-mysql:alpine-6.4-latest
 
-echo "containers created"
 fi
