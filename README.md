@@ -26,3 +26,8 @@ Delete Existing Containers and Re-run:
 
 ./zabbix_installation remove
 
+Default Login Details:
+
+URL: localhost:8080     or   <ip-address>:8080
+Uer: Admin
+Password: zabbix
