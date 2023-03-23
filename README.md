@@ -18,7 +18,7 @@ zabbix-karthick_dk/zabbix_installation.sh
 
 or 
 
-cd zabbix-karthick_dk/&& ./zabbix_installation
+cd zabbix-karthick_dk/  &&  ./zabbix_installation
 
 Delete Existing Containers and Re-run:
 
