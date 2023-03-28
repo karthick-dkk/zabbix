@@ -7,7 +7,7 @@ Centos/ Redhat/ debian/ ubuntu
 
 1.docker - installation instructions --> https://docs.docker.com/engine/install/centos/
 
->>**Download the Git:**
+>>**Download:**
 
 git clone https://github.com/karthick-dkk/zabbix-karthick_dk.git
 
