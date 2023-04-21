@@ -1,6 +1,4 @@
-****# Install Zabbix on Linux machines with in 2 minutes!****
-**OS Tested:**
-Centos/ Redhat/ debian/ ubuntu
+****# Install Zabbix on CentOS Linux machines with in 2 minutes!****
 
 **Install Zabbix Server ,Frontend , Database & Java Gateway**
 >>**Requirements:**
@@ -13,15 +11,15 @@ $ git clone https://github.com/karthick-dkk/zabbix-karthick_dk.git
 
 >>**Allow Permission:**
 
-# chmod u+x  zabbix-karthick_dk/zabbix_installation.sh
+$ chmod u+x  zabbix-karthick_dk/zabbix_installation.sh
 
 >>**Run:**
 
-# zabbix-karthick_dk/zabbix_installation.sh
+$ zabbix-karthick_dk/zabbix_installation.sh
 
 >>**Delete Existing Containers and Re-run:**
 
-# ./zabbix_installation remove
+$ ./zabbix_installation remove
 
 >>**Default Login Details:**
 
@@ -39,16 +37,16 @@ Password: zabbix
 
 **Add Repo:**
 
-# sudo rpm -Uvh https://repo.zabbix.com/zabbix/6.4/rhel/8/x86_64/zabbix-release-6.4-1.el8.noarch.rpm
+$ sudo rpm -Uvh https://repo.zabbix.com/zabbix/6.4/rhel/8/x86_64/zabbix-release-6.4-1.el8.noarch.rpm
 
-# dnf clean all
+$ dnf clean all
 
 **Download Zabbix Agent2:**
 
-# dnf install zabbix-agent2 zabbix-agent2-plugin-*
+$ dnf install zabbix-agent2 zabbix-agent2-plugin-*
  
 **Start and Enable on boot :**
 
-# systemctl restart zabbix-agent2 && 
-# systemctl enable zabbix-agent2
+$ systemctl restart zabbix-agent2 && 
+$ systemctl enable zabbix-agent2
 
