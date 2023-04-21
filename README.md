@@ -1,4 +1,4 @@
-****# Install Zabbix on CentOS Linux machines with in 2 minutes!****
+# Install Zabbix on CentOS Linux machines with in 2 minutes!
 
 **Install Zabbix Server ,Frontend , Database & Java Gateway**
 >>**Requirements:**
