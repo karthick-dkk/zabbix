@@ -3,7 +3,8 @@
 **Install Zabbix Server ,Frontend , Database & Java Gateway**
 >>**Requirements:**
 
-1.docker - installation instructions --> https://docs.docker.com/engine/install/centos/
+1.Docker - installation instructions --> https://docs.docker.com/engine/install/centos/
+2.Git
 
 >>**Download:**
 
