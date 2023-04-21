@@ -9,7 +9,7 @@ Centos/ Redhat/ debian/ ubuntu
 
 >>**Download:**
 
-# git clone https://github.com/karthick-dkk/zabbix-karthick_dk.git
+$ git clone https://github.com/karthick-dkk/zabbix-karthick_dk.git
 
 >>**Allow Permission:**
 
