@@ -1,0 +1,170 @@
+zabbix_export:
+  version: '6.4'
+  template_groups:
+    - uuid: 7b9628c6cae34f8ab76ed326439f7beb
+      name: service
+  templates:
+    - uuid: cd7070c5d50a4480a6965f29565c3182
+      template: 'service monitor'
+      name: 'service monitor'
+      description: 'service monitoring for Mysql, Nginx, httpd, SSH'
+      groups:
+        - name: service
+      items:
+        - uuid: 03f56ccd3aca4c05bdc90d838d8fb450
+          name: 'httpd service monitor'
+          key: 'system.run[systemctl is-active httpd]'
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - \bactive\b
+                - '1'
+              error_handler: CUSTOM_VALUE
+              error_handler_params: '0'
+          triggers:
+            - uuid: 4266f505bd2643ad83d4950f089ed59f
+              expression: 'last(/service monitor/system.run[systemctl is-active httpd],#2)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/service monitor/system.run[systemctl is-active httpd],#2)=1'
+              name: 'httpd service down'
+              opdata: '{ITEM.LASTVALUE}'
+              priority: AVERAGE
+        - uuid: c55a68856a8d481ea0d5d3cfd495efbf
+          name: 'mysql service monitor'
+          key: 'system.run[systemctl is-active mysql]'
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - \bactive\b
+                - '1'
+              error_handler: CUSTOM_VALUE
+              error_handler_params: '0'
+          triggers:
+            - uuid: 611a5c4f8ff14998ba68f2528c6b5c89
+              expression: 'last(/service monitor/system.run[systemctl is-active mysql],#2)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/service monitor/system.run[systemctl is-active mysql],#2)=1'
+              name: 'mysql service down'
+              opdata: '{ITEM.LASTVALUE}'
+              priority: AVERAGE
+        - uuid: d0420edda5ed4edcae0f6a4613b5dd4f
+          name: 'nginx service monitor'
+          key: 'system.run[systemctl is-active nginx]'
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - \bactive\b
+                - '1'
+              error_handler: CUSTOM_VALUE
+              error_handler_params: '0'
+          triggers:
+            - uuid: 54d17ab536ec46a3a1c00dc1248cf542
+              expression: 'last(/service monitor/system.run[systemctl is-active nginx],#2)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/service monitor/system.run[systemctl is-active nginx],#2)<>1'
+              name: 'nginx service down'
+              opdata: '{ITEM.LASTVALUE}'
+              priority: AVERAGE
+        - uuid: 7e90d3bc958f4d2db2357855b5b03214
+          name: 'ssh service monitor'
+          key: 'system.run[systemctl is-active sshd]'
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - \bactive\b
+                - '1'
+              error_handler: CUSTOM_VALUE
+              error_handler_params: '0'
+          triggers:
+            - uuid: 9b2768c2ad184f1e87ad0b07797e6402
+              expression: 'last(/service monitor/system.run[systemctl is-active sshd],#2)<>1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/service monitor/system.run[systemctl is-active sshd],#2)=1'
+              name: 'ssh service down'
+              opdata: '{ITEM.LASTVALUE}'
+              priority: DISASTER
+      tags:
+        - tag: component
+          value: service
+        - tag: service
+          value: httpd
+        - tag: service
+          value: mysql
+        - tag: service
+          value: nginx
+      dashboards:
+        - uuid: bee3a543c97e450f916c9d6f0e377d7e
+          name: 'Service Monitor'
+          display_period: '10'
+          auto_start: 'NO'
+          pages:
+            - widgets:
+                - type: graph
+                  name: 'httpd service'
+                  'y': '5'
+                  width: '24'
+                  height: '5'
+                  fields:
+                    - type: GRAPH
+                      name: graphid
+                      value:
+                        host: 'service monitor'
+                        name: 'httpd service'
+                - type: graph
+                  name: 'Mysql service'
+                  width: '24'
+                  height: '5'
+                  fields:
+                    - type: GRAPH
+                      name: graphid
+                      value:
+                        host: 'service monitor'
+                        name: 'Mysql service'
+                - type: graph
+                  name: 'nginx service'
+                  'y': '10'
+                  width: '24'
+                  height: '5'
+                  fields:
+                    - type: GRAPH
+                      name: graphid
+                      value:
+                        host: 'service monitor'
+                        name: 'nginx service'
+  graphs:
+    - uuid: 9a134397948c4de195801a83c21c723a
+      name: 'httpd service'
+      yaxismax: '2'
+      ymin_type_1: FIXED
+      ymax_type_1: FIXED
+      graph_items:
+        - drawtype: BOLD_LINE
+          color: 80FF00
+          calc_fnc: ALL
+          item:
+            host: 'service monitor'
+            key: 'system.run[systemctl is-active httpd]'
+    - uuid: 279cc4895a8f4bb98a6e23214b7827f7
+      name: 'Mysql service'
+      yaxismax: '2'
+      ymin_type_1: FIXED
+      ymax_type_1: FIXED
+      graph_items:
+        - drawtype: BOLD_LINE
+          color: 00FF00
+          calc_fnc: ALL
+          item:
+            host: 'service monitor'
+            key: 'system.run[systemctl is-active mysql]'
+    - uuid: d91c1641f02d48c8942a08eefaa38469
+      name: 'nginx service'
+      yaxismax: '2'
+      ymin_type_1: FIXED
+      ymax_type_1: FIXED
+      graph_items:
+        - drawtype: BOLD_LINE
+          color: 00FF00
+          calc_fnc: ALL
+          item:
+            host: 'service monitor'
+            key: 'system.run[systemctl is-active mysql]'
