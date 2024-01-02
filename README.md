@@ -1,29 +1,29 @@
-# Install Zabbix on CentOS Linux machines with in 2 minutes!
+# Install Zabbix on CentOS Linux machines with in minutes!
 
 **Install Zabbix Server ,Frontend , Database & Java Gateway**
->>**Requirements:**
+>>Requirements:
 
 1.Docker - installation instructions --> https://docs.docker.com/engine/install/centos/
 
 2.Git
 
->>**Download:**
+>>Download:
 
 $ git clone https://github.com/karthick-dkk/zabbix-karthick_dk.git
 
->>**Allow Permission:**
+>>Allow Permission:
 
 $ chmod u+x  zabbix-karthick_dk/zabbix_installation.sh
 
->>**Run:**
+>>Run:
 
 $ zabbix-karthick_dk/zabbix_installation.sh
 
->>**Delete Existing Containers and Re-run:**
+>>Delete Existing Containers and Re-run:
 
 $ ./zabbix_installation remove
 
->>**Default Login Details:**
+>>Default Login Details:
 
 URL: http://localhost:8080         (or)          http://IP-Address:8080
 
@@ -31,11 +31,11 @@ User: Admin
   
 Password: zabbix
 
->>**Notes:**
+>>Notes:
 
   Make sure your are allowed port 8080 on your Machine or Firewall
 
->>**Install Zabbix Agent 2 on CentOS:**
+>>Install Zabbix Agent 2 on CentOS:**
 
 **Add Repo:**
 
