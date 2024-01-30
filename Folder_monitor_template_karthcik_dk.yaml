@@ -1,0 +1,93 @@
+zabbix_export:
+  version: '6.4'
+  template_groups:
+    - uuid: 846977d1dfed4968bc5f8bdb363285bc
+      name: 'Templates/Operating systems'
+  templates:
+    - uuid: 475a4ff890f84d7ab90d97e3262e469d
+      template: 'folder monitor'
+      name: 'folder monitor'
+      groups:
+        - name: 'Templates/Operating systems'
+      items:
+        - uuid: 46abfa59da6b4cdda2f3c839318807d8
+          name: '{$FOLDER_NAME} : Space utilization'
+          key: 'vfs.dir.size[{$FOLDER_NAME},pused]'
+          value_type: FLOAT
+          units: '%'
+        - uuid: d2c674f92aad4dba888a5bff9f3d9b52
+          name: '{$FOLDER_NAME} : Total space'
+          key: 'vfs.dir.size[{$FOLDER_NAME},total]'
+          units: B
+        - uuid: e8aede2913ce4a358d7905d92e992b0e
+          name: '{$FOLDER_NAME} : Used space'
+          key: 'vfs.dir.size[{$FOLDER_NAME},used]'
+          units: B
+      tags:
+        - tag: component
+          value: folder
+      macros:
+        - macro: '{$FOLDER_NAME}'
+          value: '<folder_name>'
+          description: 'Enter Folder name.'
+        - macro: '{$VFS.FS.FREE.MIN.CRIT}'
+          value: 5G
+          description: 'Critical space'
+        - macro: '{$VFS.FS.FREE.MIN.WARN}'
+          value: 10G
+          description: 'warning space'
+        - macro: '{$VFS.FS.PUSED.MAX.CRIT}'
+          value: '90'
+          description: 'Critical percentage'
+        - macro: '{$VFS.FS.PUSED.MAX.WARN}'
+          value: '80'
+          description: 'Warning Percentage'
+  triggers:
+    - uuid: 18cab06ef09b426a889ab175fd5194fb
+      expression: |
+        last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},pused])>{$VFS.FS.PUSED.MAX.CRIT:"{$FOLDER_NAME}"} and
+        ((last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},total])-last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},used]))<{$VFS.FS.FREE.MIN.CRIT:"{$FOLDER_NAME}"} or timeleft(/folder monitor/vfs.dir.size[{$FOLDER_NAME},pused],1h,100)<1d)
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},used])<{$VFS.FS.PUSED.MAX.CRIT:"{$FOLDER_NAME}"}'
+      name: '{$FOLDER_NAME}: Disk space is critically low'
+      event_name: '{$FOLDER_NAME}: Disk space is critically low (used > {$VFS.FS.PUSED.MAX.CRIT:"{$FOLDER_NAME}"}%)'
+      opdata: 'Space used: {ITEM.LASTVALUE3} of {ITEM.LASTVALUE2} ({ITEM.LASTVALUE1})'
+      priority: HIGH
+    - uuid: 6776a72a7e4344119fbc135b01b27650
+      expression: |
+        last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},pused])>{$VFS.FS.PUSED.MAX.WARN:"{$FOLDER_NAME}"} and
+        ((last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},total])-last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},used]))<{$VFS.FS.FREE.MIN.WARN:"{$FOLDER_NAME}"} or timeleft(/folder monitor/vfs.dir.size[{$FOLDER_NAME},pused],1h,100)<1d)
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},used])<{$VFS.FS.PUSED.MAX.WARN:"{$FOLDER_NAME}"}'
+      name: '{$FOLDER_NAME}: Disk space is low'
+      event_name: '{$FOLDER_NAME}: Disk space is low (used > {$VFS.FS.PUSED.MAX.WARN:"{$FOLDER_NAME}"}%)'
+      opdata: 'Space used: {ITEM.LASTVALUE3} of {ITEM.LASTVALUE2} ({ITEM.LASTVALUE1})'
+      priority: WARNING
+      description: |
+        Two conditions should match: First, space utilization should be above {$VFS.FS.PUSED.MAX.WARN:"{#FSNAME}"}.
+         Second condition should be one of the following:
+         - The disk free space is less than {$VFS.FS.FREE.MIN.WARN:"{#FSNAME}"}.
+         - The disk will be full in less than 24 hours.
+      dependencies:
+        - name: '{$FOLDER_NAME}: Disk space is critically low'
+          expression: |
+            last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},pused])>{$VFS.FS.PUSED.MAX.CRIT:"{$FOLDER_NAME}"} and
+            ((last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},total])-last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},used]))<{$VFS.FS.FREE.MIN.CRIT:"{$FOLDER_NAME}"} or timeleft(/folder monitor/vfs.dir.size[{$FOLDER_NAME},pused],1h,100)<1d)
+          recovery_expression: 'last(/folder monitor/vfs.dir.size[{$FOLDER_NAME},used])<{$VFS.FS.PUSED.MAX.CRIT:"{$FOLDER_NAME}"}'
+  graphs:
+    - uuid: 35e922bc2d08434fab41d51e6bb35638
+      name: '{$FOLDER_NAME}: Disk space usage'
+      show_work_period: 'NO'
+      show_triggers: 'NO'
+      graph_items:
+        - color: '878787'
+          calc_fnc: ALL
+          item:
+            host: 'folder monitor'
+            key: 'vfs.dir.size[{$FOLDER_NAME},total]'
+        - sortorder: '1'
+          color: 66BB6A
+          calc_fnc: ALL
+          item:
+            host: 'folder monitor'
+            key: 'vfs.dir.size[{$FOLDER_NAME},used]'
