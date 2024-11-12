@@ -63,8 +63,6 @@ fi
 systemctl status mysql
 }
 
-#!/bin/bash
-
 # Function to configure MySQL for Zabbix
 configure_mysql_zabbix(){
     # Log into MySQL as root (prompt for password)
