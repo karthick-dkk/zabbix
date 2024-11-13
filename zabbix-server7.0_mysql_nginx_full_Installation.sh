@@ -98,7 +98,6 @@ EOF
     # Log back into MySQL to disable the function creators in binary logging
     echo "Reconnecting to MySQL to adjust log_bin_trust_function_creators..."
     mysql -uroot -p'$MYSQL_ROOT_PASSWORD <<EOF
-password
 
 # Set global setting to disable the creation of functions in binary logging
 set global log_bin_trust_function_creators = 0;
