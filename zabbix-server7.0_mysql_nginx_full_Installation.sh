@@ -41,8 +41,6 @@ install_mysql() {
   apt install mysql-server -y \
   && echo -e "******MySQL installed Successfully***** \n " || { echo -e " \n >>>> MySQL Installation Failed###### \n "; exit 1; \
   }
-  mysql_config
-
 }
 
 mysql_config() {
@@ -51,6 +49,7 @@ HAS_EXTRA_DATABASES=$(mysql -u root -e "SHOW DATABASES LIKE 'test';" )
 
 if [[ "$IS_FRESH_INSTALL" -ne 0 || "$HAS_EXTRA_DATABASES" -ne 0 ]]; then
     # Define your MySQL root password here
+    install_mysql
     # Run secure installation commands
     mysql -u root <<EOF
     ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY '$MYSQL_ROOT_PASSWORD';
@@ -74,16 +73,16 @@ systemctl status MySQL
 configure_mysql_zabbix(){
     # Log into MySQL as root (prompt for password)
     echo "Logging into MySQL as root..."
-    mysql -uroot -p '$MYSQL_ROOT_PASSWORD' <<EOF
+    mysql -uroot -p'$MYSQL_ROOT_PASSWORD' <<EOF
 
 # Create the Zabbix database with UTF8MB4 character set and collation
-create database ${zabbix_database} character set utf8mb4 collate utf8mb4_bin;
+create database {$zabbix_database} character set utf8mb4 collate utf8mb4_bin;
 
 # Create the Zabbix user and set a password
-create user zabbix@localhost identified by '$zabbix_database_user_pass';
+create user {$zabbix_database_user_pass}@localhost identified by '{$zabbix_database_user_pass}';
 
 # Grant all privileges to the Zabbix user for the Zabbix database
-grant all privileges on zabbix.* to zabbix@localhost;
+grant all privileges on {$zabbix_database}.* to {$zabbix_database_user}@localhost;
 
 # Allow the creation of functions in binary logging
 set global log_bin_trust_function_creators = 1;
@@ -98,7 +97,7 @@ EOF
 
     # Log back into MySQL to disable the function creators in binary logging
     echo "Reconnecting to MySQL to adjust log_bin_trust_function_creators..."
-    mysql -uroot -p <<EOF
+    mysql -uroot -p'$MYSQL_ROOT_PASSWORD <<EOF
 password
 
 # Set global setting to disable the creation of functions in binary logging
@@ -113,7 +112,7 @@ EOF
 configure_zabbix_server(){
     # Set the database password in the Zabbix server config
     echo "Configuring Zabbix server to connect to MySQL..."
-    sed -i "s/^#DBPassword=.*/DBPassword=password/" /etc/zabbix/zabbix_server.conf
+    sed -i "s/^#DBPassword=.*/DBPassword=MyP@ssword/" /etc/zabbix/zabbix_server.conf
 
     # Modify the nginx.conf file to uncomment and set the 'listen' and 'server_name' directives
     echo "Configuring nginx for Zabbix..."
@@ -128,12 +127,11 @@ configure_zabbix_server(){
     echo "Enabling Zabbix server, agent, nginx, and PHP-FPM to start on boot..."
     systemctl enable zabbix-server zabbix-agent nginx php8.3-fpm
 }
-
+# Execute the functions
 install_zabbix_repo
 update_system 
-install_mysql
+mysql_config
 install_zabbix
-# Execute the functions
 configure_mysql_zabbix
 configure_zabbix_server
 
