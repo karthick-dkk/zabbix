@@ -111,7 +111,7 @@ EOF
 configure_zabbix_server(){
     # Set the database password in the Zabbix server config
     echo "Configuring Zabbix server to connect to MySQL..."
-    sed -i "s/^#DBPassword=.*/DBPassword=MyP@ssword/" /etc/zabbix/zabbix_server.conf
+    sed -i "s/^# DBPassword=.*/DBPassword=MyP@ssword/" /etc/zabbix/zabbix_server.conf
 
     # Modify the nginx.conf file to uncomment and set the 'listen' and 'server_name' directives
     echo "Configuring nginx for Zabbix..."
