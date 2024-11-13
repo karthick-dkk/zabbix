@@ -1,11 +1,16 @@
-#download the repo
+#################
+# Tested On Ubuntu 24 AMD 
+# Install Zabbix-Server, Frontend, Agent, Nginx 
+# Inital Setup of Zabbix Server for Enterprise Monitoring
+##################
+#Wownload the repo from zabbix.com
 #amd64
 #wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu24.04_all.deb
 #wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu24.04_all.deb \
 #arm
 
  install_zabbix_repo() {
-     wget https://repo.zabbix.com/zabbix/7.0/ubuntu-arm64/pool/main/z/zabbix-release/zabbix-release_latest+ubuntu22.04_all.deb  \
+     wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu24.04_all.deb \
      && echo ">>>> Downloaded Zabbix repo" && dpkg -i zabbix-release_latest+ubuntu22.04_all.deb && \
      sleep 2 && [ $? -eq 0 ] && echo "*****Repo installation success ****" || { echo -e "\n >>>> Repo installation failed#######" ; exit 1; \
   }
@@ -60,7 +65,7 @@ EOF
      exit 1
 
 fi
-systemctl status mysql
+systemctl status MySQL
 }
 
 # Function to configure MySQL for Zabbix
