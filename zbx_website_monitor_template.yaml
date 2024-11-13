@@ -289,7 +289,7 @@ zabbix_export:
           steps:
             - name: 'health check'
               url: 'https://{$WEB.URL}'
-              required: 200
+              required: "200"
               status_codes: '200'
       tags:
         - tag: class
