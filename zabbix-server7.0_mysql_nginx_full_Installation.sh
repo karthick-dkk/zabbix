@@ -11,7 +11,7 @@
 
  install_zabbix_repo() {
      wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu24.04_all.deb \
-     && echo ">>>> Downloaded Zabbix repo" && dpkg -i zabbix-release_latest+ubuntu22.04_all.deb && \
+     && echo ">>>> Downloaded Zabbix repo" && dpkg -i zabbix-release_7.0-2+ubuntu24.04_all.deb && \
      sleep 2 && [ $? -eq 0 ] && echo "*****Repo installation success ****" || { echo -e "\n >>>> Repo installation failed#######" ; exit 1; \
   }
 }
