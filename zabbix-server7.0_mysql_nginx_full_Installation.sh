@@ -8,7 +8,11 @@
 #wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu24.04_all.deb
 #wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu24.04_all.deb \
 #arm
-
+    MYSQL_ROOT_PASSWORD="test"
+    # Set variable as global
+    zabbix_database_user="zabbix"
+    zabbix_database="zabbix"
+    zabbix_database_user_pass="MyP@ssword"
  install_zabbix_repo() {
      wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu24.04_all.deb \
      && echo ">>>> Downloaded Zabbix repo" && dpkg -i zabbix-release_7.0-2+ubuntu24.04_all.deb && \
@@ -47,8 +51,6 @@ HAS_EXTRA_DATABASES=$(mysql -u root -e "SHOW DATABASES LIKE 'test';" )
 
 if [[ "$IS_FRESH_INSTALL" -ne 0 || "$HAS_EXTRA_DATABASES" -ne 0 ]]; then
     # Define your MySQL root password here
-    MYSQL_ROOT_PASSWORD="test"
-
     # Run secure installation commands
     mysql -u root <<EOF
     ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY '$MYSQL_ROOT_PASSWORD';
@@ -72,14 +74,13 @@ systemctl status MySQL
 configure_mysql_zabbix(){
     # Log into MySQL as root (prompt for password)
     echo "Logging into MySQL as root..."
-    mysql -uroot -p <<EOF
-password
+    mysql -uroot -p '$MYSQL_ROOT_PASSWORD' <<EOF
 
 # Create the Zabbix database with UTF8MB4 character set and collation
-create database zabbix character set utf8mb4 collate utf8mb4_bin;
+create database ${zabbix_database} character set utf8mb4 collate utf8mb4_bin;
 
 # Create the Zabbix user and set a password
-create user zabbix@localhost identified by 'password';
+create user zabbix@localhost identified by '$zabbix_database_user_pass';
 
 # Grant all privileges to the Zabbix user for the Zabbix database
 grant all privileges on zabbix.* to zabbix@localhost;
