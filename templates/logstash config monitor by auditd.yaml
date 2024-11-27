@@ -7,7 +7,7 @@ zabbix_export:
     - uuid: b7c63fc2409643188d2b142d9f02e720
       template: 'logstash config monitor by auditd'
       name: 'logstash config monitor by auditd'
-      description: 'Monitor configuration changes and get user details who modified them.'
+      description: 'Monitor configuration changes and get user details who modified them. By  https://github.com/karthick-dkk/zabbix '
       groups:
         - name: 'Templates/Operating systems'
       items:
