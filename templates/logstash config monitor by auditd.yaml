@@ -1,1 +1,43 @@
-HI
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: 846977d1dfed4968bc5f8bdb363285bc
+      name: 'Templates/Operating systems'
+  templates:
+    - uuid: b7c63fc2409643188d2b142d9f02e720
+      template: 'logstash config monitor by auditd'
+      name: 'logstash config monitor by auditd'
+      description: 'Monitor configuration changes and get user details who modified them.'
+      groups:
+        - name: 'Templates/Operating systems'
+      items:
+        - uuid: e0035958e3e74ad4a8026c3db938a5ee
+          name: 'get logstash config changes'
+          key: auditd.logstash_change
+          value_type: LOG
+          trends: '0'
+          tags:
+            - tag: service
+              value: logstash
+        - uuid: 9181dfaa22704cf290f0767381749cda
+          name: 'logstash config modified user'
+          type: DEPENDENT
+          key: modified.user.name
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'cwd="([^"]+)"'
+                - \1
+          master_item:
+            key: auditd.logstash_change
+          triggers:
+            - uuid: 6007148e51784c79911ea365787526ea
+              expression: 'last(/logstash config monitor by auditd/modified.user.name,#1)<>last(/logstash config monitor by auditd/modified.user.name,#2)'
+              recovery_mode: NONE
+              name: 'logstash config modified by {ITEM.VALUE} on {HOST.NAME}'
+              priority: HIGH
+              type: MULTIPLE
+              manual_close: 'YES'
