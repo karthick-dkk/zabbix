@@ -688,12 +688,12 @@ zabbix_export:
         - macro: '{$SSHIP}'
           value: '{HOST.HOST}'
         - macro: '{$SSHJUMP}'
-          value: '-J windows-jump-208'
+          value: ' -J user@host:port '
         - macro: '{$SSHPASS}'
         - macro: '{$SSHPORT}'
           value: '22'
         - macro: '{$SSHUSER}'
-          value: karthick
+          value: user
         - macro: '{$VFS.FS.FSNAME.MATCHES}'
           value: .+
         - macro: '{$VFS.FS.FSNAME.NOT_MATCHES}'
