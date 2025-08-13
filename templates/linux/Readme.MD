@@ -98,3 +98,44 @@ The template includes a **Dashboard** named `Agentless Dashboard` with:
   
 - **Commands Executed via SSH**  
   Default command (`{$SSHCOMMAND}`):  
+
+
+## 📋 How to Import the Template
+
+### **Pre-Check**
+> *(Optional: Add your pre-check script here if needed)*
+
+---
+
+### **Step 1: Clone the Repository**
+```bash
+git clone https://github.com/karthick-dkk/zabbix.git
+```
+
+---
+
+### **Step 2: Copy the Script to Zabbix External Scripts Directory**
+```bash
+cd zabbix/templates/linux
+sudo cp ssh-get /usr/lib/zabbix/externalscripts/
+sudo chmod +x /usr/lib/zabbix/externalscripts/ssh-get
+```
+
+---
+
+### **Step 3: Import Template from Zabbix UI**
+1. Login to **Zabbix 7.0 UI**.
+2. Go to **Configuration → Templates → Import**.
+3. Import the template from:
+   - File: `zabbix/templates/linux/Template Linux by Agentless.yaml`
+   - Direct link:  
+     [Template Linux by Agentless.yaml](https://raw.githubusercontent.com/karthick-dkk/zabbix/refs/heads/main/templates/linux/Template%20Linux%20by%20Agentless.yaml)
+
+---
+
+## 📌 Notes
+- Make sure `/usr/lib/zabbix/externalscripts/` exists and is readable by the Zabbix server process.
+- Ensure the script has execution permission (`chmod +x`).
+- SSH keys or credentials should be configured to allow the Zabbix server to connect to the target hosts.
+
+---
