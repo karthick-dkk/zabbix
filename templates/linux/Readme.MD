@@ -1,9 +1,10 @@
 # Template Linux by SSH-Agentless (Zabbix 7.0)
 
 ## 📌 Overview
-This Zabbix template enables **agentless monitoring** of Linux servers over SSH without deploying a Zabbix agent.  
-Designed for **agent not allowed environment** Linux hosts, it collects data for CPU, memory, disk, OS version, uptime, and more.  
-Data collection is performed using **remote SSH commands** parsed via preprocessing rules.
+This Zabbix template provides **Agentless monitoring** for Linux servers using SSH, without installing a Zabbix agent.
+It is designed for environments where agents are not permitted on Linux hosts.
+The template collects key metrics such as CPU usage, memory usage, disk space, OS version, uptime, and more.
+Data is gathered through **remote SSH commands** and processed using Zabbix preprocessing rules.
 
 ---
 
@@ -102,6 +103,11 @@ The template includes a **Dashboard** named `Agentless Dashboard` with:
 
 ## 📋 How to Import the Template
 ---
+Pre-Requesite: 
+Client Machine Required packages: 
+```bash
+sudo apt install sysstat
+```
 
 ### **Step 1: Clone the Repository**
 ```bash
