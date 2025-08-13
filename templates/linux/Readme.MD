@@ -101,10 +101,6 @@ The template includes a **Dashboard** named `Agentless Dashboard` with:
 
 
 ## 📋 How to Import the Template
-
-### **Pre-Check**
-> *(Optional: Add your pre-check script here if needed)*
-
 ---
 
 ### **Step 1: Clone the Repository**
