@@ -2,7 +2,7 @@
 
 ## 📌 Overview
 This Zabbix template enables **agentless monitoring** of Linux servers over SSH without deploying a Zabbix agent.  
-Designed for **on-premise** Linux hosts, it collects data for CPU, memory, disk, OS version, uptime, and more.  
+Designed for **agent not allowed environment** Linux hosts, it collects data for CPU, memory, disk, OS version, uptime, and more.  
 Data collection is performed using **remote SSH commands** parsed via preprocessing rules.
 
 ---
