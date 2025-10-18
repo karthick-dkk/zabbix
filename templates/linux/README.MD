@@ -107,6 +107,9 @@ Pre-Requesite:
 Client Machine Required packages: 
 ```bash
 sudo apt install sysstat
+# OR
+wget https://archive.ubuntu.com/ubuntu/pool/main/s/sysstat/sysstat_12.7.7-0ubuntu1_amd64.deb
+dpkg -i sysstat_12.7.7-0ubuntu1_amd64.deb
 ```
 
 ### **Step 1: Clone the Repository**
