@@ -86,7 +86,7 @@ Group: Cloud / AWS
 | **{$AWS.REGION}**	| AWS Region |
 | **{$AWS.ASSUME.ROLE.ARN}** | For Role base acces |
 | **{$AWS.AUTH_TYPE}** | Authorization method. Possible values: `access_key`, `assume_role`, `role_base`. |
-| **{ $AWS.STS.REGION}** | Region used in assume role request |
+| **{$AWS.STS.REGION}** | Region used in assume role request |
 | **{$AWS.VPN.LLD.FILTER.NAME.MATCHES}** | Filter of discoverable VPNs (default: .*) |
 | **{$AWS.VPN.LLD.FILTER.NAME.NOT_MATCHES}** | Filter to exclude discovered VPNs |
 
