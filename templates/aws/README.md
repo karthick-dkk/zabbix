@@ -20,24 +20,37 @@ Supports Zabbix **6.4 / 7.0 / 8.0**.
   - Both tunnels DOWN
   - VPN not available   
 
+## Installation
+### 1. Import Template
+```
+Zabbix UI → Configuration → Templates → Import
+```
+Select: AWS VPN by HTTP.yaml
+download from here: 
+
+### Create a Host
+
+You don’t need any interfaces.
+Just create a host with:
+
+Hostname: AWS-VPN-Monitor
+
+Group: Cloud / AWS
+
+### Add the macros shown below.
+
+---
+| Macro	| Description |
+|-------|-------------|
+| **{$AWS.ACCESS.KEY}**	| IAM Access Key ID |
+| **{$AWS.SECRET.KEY}** |	IAM Secret Access Key |
+| **{$AWS.REGION}**	| AWS Region |
+
 ---
 
-## 📦 Template Contents
+### 📝 Expected API JSON Format
 
-| Component | Purpose |
-|----------|---------|
-| **HTTP Agent Item** | Fetches VPN JSON payload |
-| **Dependent Items** | Tunnel1, Tunnel2, State, ID, Region, Name |
-| **Preprocessing** | JSONPath extraction |
-| **Value Maps** | UP/DOWN mapping |
-| **Triggers** | Tunnel & VPN alerts |
-| **Tags** | AWS, VPN, Network |
-
----
-
-## 📝 Expected API JSON Format
-
-Your API must return JSON like:
+API must return JSON:
 
 ```
 [
