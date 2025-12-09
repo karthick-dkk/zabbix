@@ -61,7 +61,11 @@ aws ec2 describe-vpn-connections
 Zabbix UI → Configuration → Templates → Import
 ```
 Select: AWS VPN by HTTP.yaml
-download from here. 👆
+download via wget.
+```
+wget "https://raw.githubusercontent.com/karthick-dkk/zabbix/main/templates/aws/AWS%20VPN%20by%20HTTP.yaml"
+
+```
 
 ### 2. Create a Host
 
