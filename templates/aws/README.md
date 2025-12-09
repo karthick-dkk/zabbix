@@ -18,7 +18,42 @@ Supports Zabbix **6.4 / 7.0 / 8.0**.
   - Tunnel 1 DOWN  
   - Tunnel 2 DOWN  
   - Both tunnels DOWN
-  - VPN not available   
+  - VPN not available
+## How Works ?
+
+It same function as the AWS default template called AWS by HTTP. But here we are monitoring AWS Site-to-Site VPN Tunnels.
+
+## Pre-Requesite
+### AWS VPN Read Access
+- Create a **VPN Read-only** policy for Zabbix, like below.
+- Create an IAM user or **Role-based **access and attach the policy.
+  
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeVpnConnections",
+                "ec2:DescribeVpnGateways",
+                "ec2:DescribeCustomerGateways",
+                "ec2:DescribeTransitGateways",
+                "ec2:DescribeTransitGatewayAttachments",
+                "ec2:DescribeTransitGatewayConnects",
+                "ec2:DescribeTransitGatewayRouteTables"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+
+```
+- The below command should show the output.
+```
+aws ec2 describe-vpn-connections
+
+```
 
 ## Installation
 ### 1. Import Template
