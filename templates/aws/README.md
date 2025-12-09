@@ -26,9 +26,9 @@ Supports Zabbix **6.4 / 7.0 / 8.0**.
 Zabbix UI → Configuration → Templates → Import
 ```
 Select: AWS VPN by HTTP.yaml
-download from here: 
+download from here. 👆
 
-### Create a Host
+### 2. Create a Host
 
 You don’t need any interfaces.
 Just create a host with:
@@ -37,7 +37,7 @@ Hostname: AWS-VPN-Monitor
 
 Group: Cloud / AWS
 
-### Add the macros shown below.
+### 3. Add the macros shown below.
 
 ---
 | Macro	| Description |
