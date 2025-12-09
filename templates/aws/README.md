@@ -26,7 +26,7 @@ It same function as the AWS default template called AWS by HTTP. But here we are
 ## Pre-Requesite
 ### AWS VPN Read Access
 - Create a **VPN Read-only** policy for Zabbix, like below.
-- Create an IAM user or **Role-based **access and attach the policy.
+- Create an IAM user or **Role-based ** access and attach the policy.
   
 ```
 {
@@ -75,11 +75,16 @@ Group: Cloud / AWS
 ### 3. Add the macros shown below.
 
 ---
-| Macro	| Description |
+| Macros	| Description |
 |-------|-------------|
 | **{$AWS.ACCESS.KEY}**	| IAM Access Key ID |
 | **{$AWS.SECRET.KEY}** |	IAM Secret Access Key |
 | **{$AWS.REGION}**	| AWS Region |
+| **{$AWS.ASSUME.ROLE.ARN}** | For Role base acces |
+| **{$AWS.AUTH_TYPE}** | Authorization method. Possible values: `access_key`, `assume_role`, `role_base`. |
+| **{ $AWS.STS.REGION}** | Region used in assume role request |
+| **{$AWS.VPN.LLD.FILTER.NAME.MATCHES}** | Filter of discoverable VPNs (default: .*) |
+| **{$AWS.VPN.LLD.FILTER.NAME.NOT_MATCHES}** | Filter to exclude discovered VPNs |
 
 ---
 
