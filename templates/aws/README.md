@@ -108,3 +108,10 @@ API must return JSON:
   }
 ]
 ```
+
+## 📄 Full Blog:
+
+For a full step-by-step explanation of how this template works, check out the detailed Medium article:
+
+👉 **How Can You Build Real-Time AWS VPN Monitoring Using Zabbix (Without CloudWatch)?**  
+https://medium.com/devsecops-community/how-can-you-build-real-time-aws-vpn-monitoring-using-zabbix-without-cloudwatch-8c9fba6dc544
