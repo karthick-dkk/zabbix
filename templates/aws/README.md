@@ -26,7 +26,7 @@ It same function as the AWS default template called AWS by HTTP. But here we are
 ## Pre-Requesite
 ### AWS VPN Read Access
 - Create a **VPN Read-only** policy for Zabbix, like below.
-- Create an IAM user or **Role-based ** access and attach the policy.
+- Create an IAM user or **Role-based** access and attach the policy.
   
 ```
 {
