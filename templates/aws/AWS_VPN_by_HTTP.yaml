@@ -4,7 +4,7 @@ zabbix_export:
     - uuid: c2c162144c2d4c5491c8801193af4945
       name: Templates/Cloud
   templates:
-    - uuid: 5ce05335fd28485dade61a281794d14d
+    - uuid: 5be04f0f86604493943f183fca7af4d1
       template: 'AWS VPN by HTTP'
       name: 'AWS VPN by HTTP'
       description: |
@@ -14,7 +14,7 @@ zabbix_export:
       groups:
         - name: Templates/Cloud
       items:
-        - uuid: 1595f91c33844c1b878adbae0da8c1f6
+        - uuid: 98ca113032dd4f42b996626e5dfc3aac
           name: 'Get all VPNs raw data'
           type: SCRIPT
           key: aws.get.vpn
@@ -282,7 +282,7 @@ zabbix_export:
             - name: sts_region
               value: '{$AWS.STS.REGION}'
       discovery_rules:
-        - uuid: ba4b14e7fe9946cd8cc75e9dc0e5577e
+        - uuid: 080d59ab34ab496c984e9ce5d58c44a7
           name: 'VPN discovery'
           type: DEPENDENT
           key: aws.vpn.discovery
@@ -297,7 +297,7 @@ zabbix_export:
                 operator: NOT_MATCHES_REGEX
                 formulaid: B
           item_prototypes:
-            - uuid: fbf49436520741938c4759549e21f69c
+            - uuid: 5fa2a6447ced42529054bb5e91a745b5
               name: '{#VPNNAME}-({#VPNID}) Status'
               type: DEPENDENT
               key: 'aws.vpn.livestatus[{#VPNID}]'
@@ -356,15 +356,23 @@ zabbix_export:
               master_item:
                 key: aws.get.vpn
               tags:
+                - tag: service
+                  value: vpn
                 - tag: vpnname
                   value: '{#VPNNAME}'
               trigger_prototypes:
-                - uuid: 48cd416694e4421a9bb42e936b0c14f9
-                  expression: 'last(/AWS VPN by HTTP/aws.vpn.livestatus[{#VPNID}],#3)<>200 and last(/AWS VPN by HTTP/aws.vpn.livestatus[{#VPNID}],#3)=404'
+                - uuid: d50042ebae4e446580360b048d60b2a3
+                  expression: 'last(/AWS VPN by HTTP/aws.vpn.livestatus[{#VPNID}],#2)=-2'
+                  recovery_mode: NONE
                   name: 'VPN is deleted : {#VPNNAME}-({#VPNID})'
-                  priority: HIGH
+                  priority: AVERAGE
                   manual_close: 'YES'
-            - uuid: d153fcd9b9dc460ab2bc042adbe8e0ec
+                  tags:
+                    - tag: service
+                      value: vpn
+                    - tag: vpnname
+                      value: '{#VPNNAME}'
+            - uuid: 7a3daf26c10848b7a3652a694c86c6b6
               name: 'get {#VPNNAME} Summary'
               type: DEPENDENT
               key: 'aws.vpn.summary[{#VPNID}]'
@@ -411,7 +419,10 @@ zabbix_export:
                       }
               master_item:
                 key: aws.get.vpn
-            - uuid: 7e89e5a412d045389ef96e90c76dd615
+              tags:
+                - tag: service
+                  value: vpn
+            - uuid: 18ac475cceda445ba2a4a4b73ad02b82
               name: '{#VPNNAME}-({#VPNID})-Tunnel-1 Status'
               type: DEPENDENT
               key: 'aws.vpn.tunnel1[{#VPNID}]'
@@ -422,39 +433,22 @@ zabbix_export:
                 - type: JAVASCRIPT
                   parameters:
                     - |
-                      try {
-                          // Extract all JSON objects from the full input
-                          var matches = value.match(/\{[\s\S]*?\}/g);
+                      var lines = value.trim().split(/\r?\n/);
                       
-                          if (!matches) {
-                              return "NOT_FOUND";
-                          }
-                      
-                          var objects = [];
-                      
-                          matches.forEach(function(m) {
-                              try {
-                                  var obj = JSON.parse(m);
-                                  objects.push(obj);
-                              } catch (e) {
-                                  // ignore broken fragments
+                      for (var i = 0; i < lines.length; i++) {
+                          try {
+                              var arr = JSON.parse(lines[i]);   // each line is [ { ... } ]
+                              for (var j = 0; j < arr.length; j++) {
+                                  if (arr[j].vpnId === "{#VPNID}") {
+                                      return arr[j].tunnel1;
+                                  }
                               }
-                          });
-                      
-                          var target = "{#VPNID}".trim();   // current VPN ID
-                      
-                          for (var i = 0; i < objects.length; i++) {
-                              if (objects[i].vpnId === target) {
-                                  // Return TUNNEL 1 ONLY
-                                  return objects[i].tunnel1;
-                              }
+                          } catch (e) {
+                              // skip invalid lines
                           }
-                      
-                          return "NOT_FOUND";
-                      
-                      } catch (e) {
-                          return "ERROR: " + e.toString();
                       }
+                      
+                      return "UNKNOWN";
                 - type: STR_REPLACE
                   parameters:
                     - UP
@@ -470,9 +464,11 @@ zabbix_export:
               master_item:
                 key: aws.get.vpn
               tags:
+                - tag: service
+                  value: vpn
                 - tag: vpnname
                   value: '{#VPNNAME}'
-            - uuid: fe3c9a26dadb44a1bbdc8d2b1770e62f
+            - uuid: 124f3a51ac454cb7bf93d02c56b1697c
               name: '{#VPNNAME}-({#VPNID})-Tunnel-2 Status'
               type: DEPENDENT
               key: 'aws.vpn.tunnel2[{#VPNID}]'
@@ -483,39 +479,23 @@ zabbix_export:
                 - type: JAVASCRIPT
                   parameters:
                     - |
-                      try {
-                          // Extract all JSON objects from the full input
-                          var matches = value.match(/\{[\s\S]*?\}/g);
+                      var lines = value.trim().split(/\r?\n/);
                       
-                          if (!matches) {
-                              return "NOT_FOUND";
-                          }
-                      
-                          var objects = [];
-                      
-                          matches.forEach(function(m) {
-                              try {
-                                  var obj = JSON.parse(m);
-                                  objects.push(obj);
-                              } catch (e) {
-                                  // ignore broken fragments
+                      for (var i = 0; i < lines.length; i++) {
+                          try {
+                              var arr = JSON.parse(lines[i]);   // each line is [ { ... } ]
+                              for (var j = 0; j < arr.length; j++) {
+                                  if (arr[j].vpnId === "{#VPNID}") {
+                                      return arr[j].tunnel2;
+                                  }
                               }
-                          });
-                      
-                          var target = "{#VPNID}".trim();   // current VPN ID
-                      
-                          for (var i = 0; i < objects.length; i++) {
-                              if (objects[i].vpnId === target) {
-                                  // Return TUNNEL 1 ONLY
-                                  return objects[i].tunnel2;
-                              }
+                          } catch (e) {
+                              // skip invalid lines
                           }
-                      
-                          return "NOT_FOUND";
-                      
-                      } catch (e) {
-                          return "ERROR: " + e.toString();
                       }
+                      
+                      return "UNKNOWN";
+                      
                 - type: STR_REPLACE
                   parameters:
                     - UP
@@ -531,20 +511,27 @@ zabbix_export:
               master_item:
                 key: aws.get.vpn
               tags:
+                - tag: service
+                  value: vpn
                 - tag: vpnname
                   value: '{#VPNNAME}'
           trigger_prototypes:
-            - uuid: 59c808451c5b4826a0cb43f2fa3168ff
+            - uuid: 5b6911fe942c41beb890fd985c268574
               expression: |
                 (last(/AWS VPN by HTTP/aws.vpn.tunnel1[{#VPNID}],#3)<>1
                 and last(/AWS VPN by HTTP/aws.vpn.tunnel2[{#VPNID}],#3)<>1)and last(/AWS VPN by HTTP/aws.vpn.livestatus[{#VPNID}],#3)=200
               name: 'VPN is down on: {#VPNNAME}-({#VPNID})'
-              priority: HIGH
+              priority: AVERAGE
+              dependencies:
+                - name: 'VPN is deleted : {#VPNNAME}-({#VPNID})'
+                  expression: 'last(/AWS VPN by HTTP/aws.vpn.livestatus[{#VPNID}],#2)=-2'
               tags:
+                - tag: service
+                  value: vpn
                 - tag: vpnname
                   value: '{#VPNNAME}'
           graph_prototypes:
-            - uuid: a43fbd2028a3416891d06a14e3baf761
+            - uuid: 4e963a0eab234a669becac00dece628e
               name: 'VPN Availability Status {#VPNNAME}-({#VPNID})'
               graph_items:
                 - drawtype: BOLD_LINE
@@ -553,7 +540,7 @@ zabbix_export:
                   item:
                     host: 'AWS VPN by HTTP'
                     key: 'aws.vpn.livestatus[{#VPNID}]'
-            - uuid: 294780cbfc3c48dfa4aaea4c43e34db7
+            - uuid: 5fd1555a1279492081c94f89c650fb09
               name: 'VPN Tunnel Status {#VPNNAME}-({#VPNID})'
               graph_items:
                 - drawtype: BOLD_LINE
@@ -575,40 +562,25 @@ zabbix_export:
             - type: JAVASCRIPT
               parameters:
                 - |
-                  try {
-                      var text = value.trim();
+                  var out = [];
+                  var lines = value.trim().split(/\r?\n/);
                   
-                      // Match ANY JSON object inside input
-                      var matches = text.match(/\{[\s\S]*?\}/g);
-                  
-                      if (!matches) {
-                          return JSON.stringify([]);
+                  for (var i = 0; i < lines.length; i++) {
+                      try {
+                          var arr = JSON.parse(lines[i]); // each line is [ { ... } ]
+                          arr.forEach(function(v) {
+                              out.push({
+                                  "{#VPNID}": v.vpnId,
+                                  "{#VPNNAME}": v.vpnName
+                              });
+                          });
+                      } catch (e) {
+                          // ignore broken lines
                       }
-                  
-                      var merged = [];
-                  
-                      matches.forEach(function(objText) {
-                          try {
-                              var obj = JSON.parse(objText);
-                              merged.push(obj);
-                          } catch (e) {
-                              // skip invalid JSON chunks
-                          }
-                      });
-                  
-                      // Build LLD array
-                      var out = merged.map(function(v) {
-                          return {
-                              "{#VPNID}": v.vpnId,
-                              "{#VPNNAME}": v.vpnName
-                          };
-                      });
-                  
-                      return JSON.stringify(out);
-                  
-                  } catch (err) {
-                      return JSON.stringify({ "error": err.toString() });
                   }
+                  
+                  return JSON.stringify(out);
+                  
       tags:
         - tag: class
           value: software
@@ -642,9 +614,11 @@ zabbix_export:
           description: 'Filter to exclude discovered EC2 instances by region.'
         - macro: '{$AWS.PROXY}'
           description: 'Sets HTTP proxy value. If this macro is empty then no proxy is used.'
-        - macro: '{$AWS.REQUEST.REGION}'
-          value: us-east-1
-          description: 'Region used in GET request `ListBuckets`.'
+        - macro: '{$AWS.REGION}'
+          value: us-west-1
+          description: 'Amazon EC2 Region code.'
+        - macro: '{$AWS.SECRET.ACCESS.KEY}'
+          description: 'Secret access key.'
         - macro: '{$AWS.STS.REGION}'
           value: us-east-1
           description: 'Region used in assume role request.'
@@ -653,16 +627,14 @@ zabbix_export:
         - macro: '{$AWS.VPN.LLD.FILTER.NAME.NOT_MATCHES}'
           value: CHANGE_IF_NEEDED
       valuemaps:
-        - uuid: 3b899ac6cc75413e8be2ed888e0f267e
+        - uuid: 9b1cb55a80244b879f445a23fbacaec4
           name: 'VPN status'
           mappings:
-            - value: '0'
-              newvalue: DOWN
-            - value: '1'
-              newvalue: UP
             - value: '-1'
               newvalue: UNKNOWN
-            - value: '404'
+            - value: '-2'
               newvalue: Deleted
             - value: '200'
               newvalue: Available
+            - value: '0'
+              newvalue: pending
