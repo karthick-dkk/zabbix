@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    /* Status Colors: Resolved (#38C172) */
+    .status-accent { border-left: 6px solid #38C172; }
+    .status-text { color: #38C172; }
+    .label { padding: 4px 0; font-size: 13px; color: #718096; width: 160px; font-weight: 600; }
+    .value { padding: 4px 0; font-size: 13px; color: #2D3748; }
+</style>
+</head>
+<body style="margin:0; padding:0; background-color:#F4F7F9; font-family: 'Segoe UI', Arial, sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#F4F7F9; padding: 15px 0;">
+    <tbody>
+        <tr>
+            <td align="center">
+                <table width="580" cellpadding="0" cellspacing="0" role="presentation" class="status-accent" style="background-color:#ffffff; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); overflow: hidden;">
+                    <tbody>
+                        <tr>
+                            <td style="padding: 20px 25px;">
+                                <h4 style="margin: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 11px; color: #718096;">Zabbix Alert Notification</h4>
+                                <h1 style="margin: 5px 0 12px 0; font-size: 18px; color: #2D3748; font-weight: 700; line-height: 1.2;">
+                                    <span class="status-text">Resolved:</span> {TRIGGER.NAME}
+                                </h1>
+
+                                <hr style="border: 0; border-top: 1px solid #EDF2F7; margin: 12px 0;">
+
+                                <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                    <tbody>
+                                        <tr>
+                                            <td class="label">Severity</td>
+                                            <td class="value">{TRIGGER.SEVERITY}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Host Name</td>
+                                            <td class="value">{HOST.NAME}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Host IP</td>
+                                            <td class="value" style="font-family: monospace;">{HOST.IP}</td>
+                                        </tr>
+                                        
+                                          <tr>
+                                            <td class="label">Resolved In</td>
+                                            <td class="value">{EVENT.DURATION}  </td>   
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Recovery Time</td>
+                                            <td class="value">{EVENT.RECOVERY.TIME} on {EVENT.RECOVERY.DATE} </td>   
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Operational Data</td>
+                                            <td class="value" style="color: #38C172; font-weight: bold;">{EVENT.RECOVERY.VALUE}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Original Problem ID</td>
+                                            <td class="value">{EVENT.ID}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div style="margin-top: 15px; padding: 10px 15px; background-color: #F0FFF4; border-radius: 4px; border: 1px solid #C6F6D5;">
+                                    <p style="margin: 0; font-size: 13px; color: #2F855A; line-height: 1.4;"><strong>Status:</strong> The issue has been resolved and the service has returned to normal parameters.</p>
+                                </div>
+
+                                <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top: 18px;">
+                                    <tr>
+                                        <td align="left">
+                                            <a href="{TRIGGER.URL}" style="background-color: #2D3748; color: #ffffff; padding: 8px 18px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 12px; display: inline-block;">View History</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table width="580" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                        <td style="padding: 12px; text-align: center;">
+                            <p style="margin: 0; font-size: 11px; color: #A0AEC0;">
+                                <strong>Zabbix Monitoring</strong> | Product Support Team
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
