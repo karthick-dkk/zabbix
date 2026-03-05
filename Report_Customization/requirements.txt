@@ -1,0 +1,14 @@
+# Zabbix HTML Reporter — Python Dependencies
+#
+# All dependencies are from the Python standard library EXCEPT:
+#   (none — this project intentionally uses only stdlib)
+#
+# Python >= 3.8 is required.
+#
+# Standard library modules used:
+#   argparse, collections, configparser, csv, datetime, email,
+#   io, json, logging, os, smtplib, ssl, sys, time, typing,
+#   urllib.request, urllib.error
+#
+# No pip install needed.
+# Run directly:  python zbx_reporter.py --help

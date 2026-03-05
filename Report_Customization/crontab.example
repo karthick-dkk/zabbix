@@ -1,0 +1,64 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Zabbix HTML Reporter — Crontab Examples
+#
+# Install with:  crontab -e
+# Or append to system cron: /etc/cron.d/zabbix-reporter
+#
+# Adjust REPORTER_DIR and CONFIG to match your installation.
+# ─────────────────────────────────────────────────────────────────────────────
+
+SHELL=/bin/bash
+REPORTER_DIR=/opt/zabbix-html-reporter
+CONFIG=$REPORTER_DIR/config.ini
+LOG=$REPORTER_DIR/logs/reporter.log
+PYTHON=/usr/bin/python3
+
+# ── Hourly Alert Summary ──────────────────────────────────────────────────────
+# Runs at minute 0 of every hour — sends email + saves HTML/CSV
+0 * * * *  $PYTHON $REPORTER_DIR/zbx_reporter.py \
+    --type hourly \
+    --format both \
+    --output-dir $REPORTER_DIR/reports \
+    --send-email \
+    --config $CONFIG \
+    --quiet >> $LOG 2>&1
+
+# ── 4-Hour Problem Summary ────────────────────────────────────────────────────
+# Runs every 4 hours (at 00:00, 04:00, 08:00, 12:00, 16:00, 20:00)
+0 */4 * * *  $PYTHON $REPORTER_DIR/zbx_reporter.py \
+    --type 4hr \
+    --format both \
+    --output-dir $REPORTER_DIR/reports \
+    --send-email \
+    --config $CONFIG \
+    --quiet >> $LOG 2>&1
+
+# ── 8-Hour Problem Summary ────────────────────────────────────────────────────
+# Runs every 8 hours (at 00:00, 08:00, 16:00)
+0 */8 * * *  $PYTHON $REPORTER_DIR/zbx_reporter.py \
+    --type 8hr \
+    --format both \
+    --output-dir $REPORTER_DIR/reports \
+    --send-email \
+    --config $CONFIG \
+    --quiet >> $LOG 2>&1
+
+# ── Top 20 Triggers (daily) ───────────────────────────────────────────────────
+# Runs once per day at 07:00
+0 7 * * *  $PYTHON $REPORTER_DIR/zbx_reporter.py \
+    --type top20 \
+    --format both \
+    --output-dir $REPORTER_DIR/reports \
+    --send-email \
+    --config $CONFIG \
+    --quiet >> $LOG 2>&1
+
+# ── All Reports (daily morning digest) ───────────────────────────────────────
+# Runs once per day at 06:00
+# 0 6 * * *  $PYTHON $REPORTER_DIR/zbx_reporter.py \
+#     --type all \
+#     --format both \
+#     --output-dir $REPORTER_DIR/reports \
+#     --send-email \
+#     --config $CONFIG \
+#     --quiet >> $LOG 2>&1

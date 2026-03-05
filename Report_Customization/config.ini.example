@@ -1,0 +1,86 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Zabbix HTML Reporter — Configuration File
+# Copy this file to config.ini and fill in your values.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+# ── Zabbix Server ─────────────────────────────────────────────────────────────
+[zabbix]
+
+# Full URL to the Zabbix frontend (no trailing slash needed)
+url = http://your-zabbix-server
+
+# SSL verification. Set to false only in test environments with self-signed certs.
+verify_ssl = true
+
+# Connection timeout in seconds
+timeout = 30
+
+# ── Authentication (choose ONE method) ────────────────────────────────────────
+#
+# Option 1 – API Token (recommended for Zabbix 5.4 / 7.0 / 8.0)
+#   Create in Zabbix UI: Administration → Users → <user> → API tokens
+#
+api_token =
+
+#
+# Option 2 – Username / Password (all Zabbix versions)
+#
+user     =
+password =
+
+
+# ── Report Settings ────────────────────────────────────────────────────────────
+[reports]
+
+# Always send email after generating reports (no need for --send-email flag)
+# Set to true to have every run send email automatically (e.g. from cron)
+send_email = true
+
+# Comma-separated list of email recipients
+email_to = ops-team@example.com, manager@example.com
+
+# Email subject line prefix
+subject_prefix = [Zabbix Report]
+
+# Attach CSV files to the email? (true/false)
+attach_csv = true
+
+# Time window for the Top-20 Triggers report (in hours)
+# Default: 24 hours
+top20_window_hours = 24
+
+# Minimum severity to include in reports (0=all, 1=info+, 2=warning+, …, 5=disaster only)
+min_severity = 0
+
+
+# ── SMTP / Email ───────────────────────────────────────────────────────────────
+[smtp]
+
+# SMTP server hostname or IP
+host = smtp.example.com
+
+# SMTP port:
+#   25   – plain SMTP (no encryption)
+#   465  – SMTP over SSL/TLS  → set tls = true
+#   587  – SMTP with STARTTLS → set starttls = true
+port = 587
+
+# Sender address
+from = zabbix-reporter@example.com
+
+# SMTP credentials (leave blank if the server allows anonymous relay)
+username = zabbix-reporter@example.com
+password = your_smtp_password
+
+# TLS modes (only one should be true)
+# tls = true      → SSL/TLS from the start (port 465)
+# starttls = true → STARTTLS upgrade (port 587)
+tls      = false
+starttls = true
+
+# Verify server SSL certificate
+verify_ssl = true
+
+# SMTP connection timeout in seconds
+timeout = 30
